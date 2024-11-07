@@ -1,0 +1,15 @@
+ @mixin d-flex($direction, $justify, $items, $row, $col) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $items;
+  row-gap: $row;
+  column-gap: $col;
+}
+
+@mixin txt($size, $weight, $color, $align) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+  text-align: $align;
+}

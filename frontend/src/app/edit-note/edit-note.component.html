@@ -1,0 +1,13 @@
+<section [style]="style">
+  <i class="fa fa-close" (click)="onClose()"></i>
+  <form class="main" [formGroup]="editNoteForm" (ngSubmit)="editNote(noteId)">
+    <label for="title"> Update title: </label>
+    <input id="title" type="text" formControlName="title" />
+    <label for="content"> Update content: </label>
+    <textarea id="content" type="text" formControlName="content"></textarea>
+    <label for="category"> Update category: </label>
+    <input id="category" type="text" formControlName="category" />
+    <button type="submit" [disabled]="!editNoteForm.valid" >Submit Edit</button>
+  </form>
+</section>
+

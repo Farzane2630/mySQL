@@ -1,0 +1,46 @@
+@use "../../main.scss" as mixin;
+
+section {
+  @extend .main;
+  align-items: flex-end !important;
+  background-color: white;
+  border-radius: 12px;
+  border: darkcyan 3px dashed;
+  z-index: 9999999;
+  position: absolute;
+  top: 5%;
+  left: 15%;
+}
+
+.main {
+  @include mixin.d-flex(column, space-between, center, 8px, _);
+  width: 500px;
+  min-height: 200px;
+  padding: 16px;
+}
+
+input {
+  width: calc(100% - 68px);
+  border: 0.5px solid rgba(92, 91, 91, 0.486);
+  height: 32px;
+  border-radius: 12px;
+}
+
+textarea {
+  border: 0.5px solid rgba(92, 91, 91, 0.486);
+  width: calc(100% - 68px);
+  height: 100px;
+  max-height: 100px;
+  overflow: scroll;
+  border-radius: 12px;
+}
+
+button {
+  @include mixin.txt(24px, 600, white, center);
+  width: calc(100% - 68px);
+  height: 48px;
+  border-radius: 12px;
+  margin: 24px auto;
+  background-color: rgb(39, 133, 133);
+  cursor: pointer;
+}

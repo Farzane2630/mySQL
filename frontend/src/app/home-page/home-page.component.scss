@@ -1,0 +1,33 @@
+@use "../../main.scss" as mixin;
+
+.main {
+  width: full;
+  min-height: 100vh;
+  @include mixin.d-flex(column, center, center, _, _);
+  position: relative;
+}
+
+.content {
+  width: 75%;
+  margin: 20px auto;
+  border-radius: 16px;
+  box-shadow: rgb(126, 125, 125) 1px 0 5px 1px;
+  background-color: white;
+}
+
+.header {
+  @include mixin.d-flex(_, space-between, center, 8px, _);
+  padding: 12px 32px;
+  background-color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.body {
+  @include mixin.d-flex(row, center, start, 24px, 24px);
+  flex-wrap: wrap;
+  min-height: 200px;
+  background-color: #2ca4ad63;
+  box-shadow: rgb(168, 166, 166) 0 0 5px 0;
+  border-radius: 0 0 12px 12px;
+  padding: 24px;
+}

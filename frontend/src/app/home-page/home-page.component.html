@@ -1,0 +1,25 @@
+<main class="main">
+  <app-new-note [style]="style" (closeEvent)="closeModal()" />
+  <app-edit-note
+    [style]="editModalStyle"
+    [noteId]="noteId"
+    (closeEvent)="closeEditModal()"
+    (editEvent)="editNote(noteId)"
+    [note]="note"
+  />
+  <div class="content">
+    <div class="header">
+      <app-search-box />
+      <app-add-button (addNewEvent)="addNewNote()" />
+    </div>
+    <div class="body">
+      @for(note of notes; track note.id){
+      <app-note-card
+        [note]="note"
+        (editEvent)="note.id && openEditNote(note.id)"
+        (deleteEvent)="note.id && deleteNote(note.id)"
+      />
+      }
+    </div>
+  </div>
+</main>

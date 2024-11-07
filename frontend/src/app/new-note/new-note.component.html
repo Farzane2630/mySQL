@@ -1,0 +1,12 @@
+<section [style]="style">
+  <i class="fa fa-close" (click)="onClose()"></i>
+  <form class="main" [formGroup]="newNoteForm" (ngSubmit)="handleSubmit()">
+    <label for="title"> Write a title: </label>
+    <input id="title" type="text" formControlName="title" />
+    <label for="content"> Write the content: </label>
+    <textarea id="content" type="text" formControlName="content"></textarea>
+    <label for="category"> Define the category: </label>
+    <input id="category" type="text" formControlName="category" />
+    <button type="submit" [disabled]="!newNoteForm.valid">Add</button>
+  </form>
+</section>

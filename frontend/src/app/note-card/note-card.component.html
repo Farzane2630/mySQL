@@ -1,0 +1,29 @@
+<div class="main">
+  <div class="header">
+    <button class="category">{{ note.category }}</button>
+    <div class="actions">
+      <span>
+        <i
+          class="fas fa-pen"
+          (click)="note.id && editNote(note.id)"
+          style="color: #59d2d6; cursor: pointer"
+        ></i>
+      </span>
+
+      <span>
+        <i
+          class="fas fa-trash"
+          (click)="note.id && deleteNote(note.id)"
+          style="color: #59d2d6; cursor: pointer"
+        ></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="note">
+    <p class="title">{{ note.title }}</p>
+    <p class="content">{{ note.content }}</p>
+  </div>
+
+  <div class="date">{{ formattedDate }}</div>
+</div>

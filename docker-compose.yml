@@ -1,0 +1,48 @@
+services:
+  web:
+    depends_on:
+      - api
+    build: ./frontend
+    ports:
+      - "4300:4200"
+    volumes:
+      - ./frontend/src/app:/frontend/src/app
+  api:
+    depends_on:
+      mysql:
+        condition: service_healthy
+    build: ./backend
+    ports:
+      - "8000:8080"
+    command: ["npm", "run", "devStart"]
+    env_file:
+      - ./backend/.env
+    environment:
+      MYSQL_HOST: mysql
+      # MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./backend:/backend
+    working_dir: /backend
+    restart: always
+  mysql:
+    image: mysql:latest
+    env_file:
+      - ./backend/.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql-data:

@@ -1,0 +1,51 @@
+@use "../../main.scss" as mixin;
+
+.main {
+  @include mixin.d-flex(column, space-between, start, 8px, _);
+  width: 360px;
+  max-height: 300px;
+  min-height: 200px;
+  padding: 8px 12px;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.header {
+  @include mixin.d-flex(_, space-between, center, _, 8px);
+  width: 100%;
+  padding: 12px 0;
+  border-bottom: 1px #59d2d6 solid;
+
+  button {
+    height: 50px;
+    border: none;
+    border-radius: 32px;
+    background-color: #2ca4ada6;
+    color: #041242;
+    font-weight: 700;
+    padding: 8px 12px;
+  }
+  .actions {
+    @include mixin.d-flex(_, space-between, center, _, 16px);
+    padding-right: 18px;
+  }
+}
+
+.note {
+  .title {
+    @include mixin.txt(20px, bold, #041242, left);
+    margin-top: 0;
+  }
+  .content {
+    @include mixin.txt(14px, _, rgb(6, 10, 20), left);
+    max-height: 120px;
+    // overflow: scroll;
+  }
+}
+
+.date {
+  @include mixin.txt(12px, 200, rgba(6, 10, 20, 0.37), _);
+  @include mixin.d-flex(_, end, center, _, _);
+  width: 100%;
+}
