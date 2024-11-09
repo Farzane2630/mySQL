@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createUser, getUsers, login } from "../db.js";
+import jwt from "jsonwebtoken";
 
 const router = Router();
 
@@ -25,11 +26,12 @@ export const loginUser = () =>
   router.post("/login", async (req, res) => {
     try {
       const { email, password } = req.body;
-      const user = await login({ email, password });
+      const response = await login({ email, password });
 
       res.status(200).send({
         message: "Login successful",
-        user,
+        user: response.user,
+        token: response.token
       });
     } catch (error) {
       res.status(401).send({ message: "Login failed", error: error.message });

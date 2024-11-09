@@ -1,14 +1,21 @@
 import { Router } from "express";
-import { createNote, deleteNote, getNote, getNotes, updateNote } from "../db.js";
+import {
+  createNote,
+  deleteNote,
+  getNote,
+  getNotes,
+  updateNote,
+} from "../db.js";
+import authenticateToken from "../auth.js";
 
 const router = Router();
 
 export const getAllNotes = () =>
-  router.get("/notes", async (req, res) => {
-    const notes = await getNotes();
-    res.status(201).send(notes);
+  router.get("/notes", authenticateToken, async (req, res) => {
+    const user_id = req.user.user_id;
+    const notes = await getNotes(user_id);
 
-    console.log(notes);
+    res.status(201).send(notes);
   });
 
 export const getOneNote = () =>
@@ -21,26 +28,35 @@ export const getOneNote = () =>
   });
 
 export const addNewNote = () =>
-  router.post("/notes", async (req, res) => {
-    const note = req.body;
-    const newNote = await createNote(note);
-    res.status(201).send(newNote);
+  router.post("/notes", authenticateToken, async (req, res) => {
+    const user_id = req.user.user_id;
+    const { title, content, category } = req.body;
+    const newNote = await createNote({ title, content, category, user_id });
+    res.status(201).send({ message: "Note created", note: newNote });
   });
 
 export const deleteOneNote = () =>
-  router.delete("/notes/:id", async (req, res) => {
+  router.delete("/notes/:id", authenticateToken, async (req, res) => {
+    const user_id = req.user.user_id;
     const id = req.params.id;
-    const note = await deleteNote(id);
+    const note = await deleteNote({ id, user_id });
     res.status(201).send(note);
   });
 
 export const updateOneNote = () =>
-  router.put("/notes/:id", async (req, res) => {
+  router.put("/notes/:id", authenticateToken, async (req, res) => {
+    const user_id = req.user.user_id;
     const id = req.params.id;
     const { title, content, category } = req.body;
-    
+
     try {
-      const result = await updateNote({ id, title, content, category });
+      const result = await updateNote({
+        id,
+        title,
+        content,
+        category,
+        user_id,
+      });
       if (result.affectedRows > 0) {
         res.status(200).send({ message: "Note updated successfully", result });
       } else {

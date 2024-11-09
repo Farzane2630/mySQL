@@ -1,4 +1,5 @@
 import mysql from "mysql2";
+import jwt from "jsonwebtoken";
 
 const pool = mysql
   .createPool({
@@ -10,31 +11,41 @@ const pool = mysql
   })
   .promise();
 
-export async function createNote({ title, content, category }) {
+export async function createNote({ title, content, category, user_id }) {
   const [result] = await pool.query(
-    "INSERT INTO notes (title, content, category) VALUES (? , ?, ?) ",
-    [title, content, category]
+    "INSERT INTO notes (title, content, category, user_id) VALUES (? , ?, ?, ?) ",
+    [title, content, category, user_id]
   );
   return result;
 }
 
-export async function getNotes() {
-  const [notes] = await pool.query("SELECT * FROM notes");
+// pool.query(`ALTER TABLE notes  IF NOT EXISTS
+// ADD user_id INT,
+// ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+// `);
+export async function getNotes(user_id) {
+  const [notes] = await pool.query("SELECT * FROM notes WHERE user_id = ?", [
+    user_id,
+  ]);
   return notes;
 }
 export async function getNote(id) {
   const [note] = await pool.query("SELECT * FROM notes WHERE id = ?", id);
   return note;
 }
-export async function deleteNote(id) {
-  const [note] = await pool.query("DELETE FROM notes WHERE id = ?", id);
+export async function deleteNote({ id, user_id }) {
+  const [note] = await pool.query(
+    "DELETE FROM notes WHERE id = ? AND user_id =? ",
+    [id,
+    user_id]
+  );
   return note;
 }
 
-export async function updateNote({ id, title, content, category }) {
+export async function updateNote({ user_id, id, title, content, category }) {
   const [note] = await pool.query(
-    "UPDATE notes SET title = ?, content = ?, category = ? WHERE id = ? ",
-    [title, content, category, id]
+    "UPDATE notes SET title = ?, content = ?, category = ? WHERE user_id = ? AND id = ?",
+    [title, content, category, user_id, id]
   );
 
   return note;
@@ -78,11 +89,27 @@ export async function login({ email, password }) {
       throw new Error("Invalid credentials");
     }
 
+    const token = jwt.sign(
+      { user_id: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
     return {
-      email: user.email,
-      name: user.name,
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      },
     };
   } catch (error) {
     throw new Error("An error occurred during login");
   }
+}
+
+export async function deleteUser(id) {
+  const [result] = await pool.query("DELETE FROM users WHERE id=?", [id]);
+
+  return result;
 }

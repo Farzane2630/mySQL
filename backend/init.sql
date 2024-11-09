@@ -18,3 +18,8 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- Print debug information
 SELECT 'Tables created successfully' AS message;
+
+
+ALTER TABLE notes
+ADD user_id INT,
+ADD FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;

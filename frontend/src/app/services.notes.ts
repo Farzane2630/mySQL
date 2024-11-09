@@ -1,6 +1,6 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 import { noteType } from "./types";
 
 @Injectable({
@@ -8,25 +8,43 @@ import { noteType } from "./types";
 })
 export class NotesServices {
   private ApiUrl = "http://127.0.0.1:8000/notes";
+  token = localStorage.getItem("token");
   constructor(private http: HttpClient) {}
 
   getNotes(): Observable<any> {
-    return this.http.get(this.ApiUrl);
+  
+    if (!this.token) {
+      console.log("No token found");
+      return throwError(() => new Error("No token found"));
+    }
+  
+    const headers = new HttpHeaders().set("Authorization", `Bearer ${this.token}`);
+    return this.http.get(this.ApiUrl, { headers }).pipe(
+      catchError((error) => {
+        console.error("Failed to fetch notes:", error);
+        return throwError(() => error);
+      })
+    );
   }
 
   getOneNote(noteID: number): Observable<any> {
     return this.http.get(`${this.ApiUrl}/${noteID}`);
   }
-
+  
   createNewNote(note: noteType): Observable<any> {
-    return this.http.post(this.ApiUrl, note);
+    const headers = new HttpHeaders().set("Authorization", `Bearer ${this.token}`)
+    return this.http.post(this.ApiUrl, note, {headers});
   }
 
   deleteNote(noteID: number): Observable<any> {
-    return this.http.delete(`${this.ApiUrl}/${noteID}`);
+    const headers = new HttpHeaders().set("Authorization", `Bearer ${this.token}`)
+
+    return this.http.delete(`${this.ApiUrl}/${noteID}`, {headers});
   }
 
   updateNote(noteID: number, targetNote: noteType): Observable<any> {
-    return this.http.put(`${this.ApiUrl}/${noteID}`, targetNote);
+    const headers = new HttpHeaders().set("Authorization", `Bearer ${this.token}`)
+
+    return this.http.put(`${this.ApiUrl}/${noteID}`, targetNote, {headers});
   }
 }

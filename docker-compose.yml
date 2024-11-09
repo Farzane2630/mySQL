@@ -4,9 +4,9 @@ services:
       - api
     build: ./frontend
     ports:
-      - "4300:4200"
+      - "4200:4200"
     volumes:
-      - ./frontend/src/app:/frontend/src/app
+      - ./frontend:/frontend
   api:
     depends_on:
       mysql:
