@@ -13,4 +13,19 @@ c. Run
 sudo docker compose --env-file ./backend/.env up --build
 ``` 
 
-
+*** if there was error regarding "nodemon" follow below instructions:
+``` 
+cd backend/
+ ```
+```  
+npm install nodemon
+``` 
+```
+cd .. 
+```
+``` 
+sudo docker compose down
+``` 
+``` 
+sudo docker compose --env-file ./backend/.env up --build
+``` 
