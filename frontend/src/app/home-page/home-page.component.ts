@@ -22,8 +22,8 @@ import { UserServices } from "../services.user";
   styleUrl: "./home-page.component.scss",
 })
 export class HomePageComponent implements OnInit {
-  style: string = "visibility: hidden";
-  editModalStyle: string = "visibility: hidden";
+  newNoteModalVisibility: boolean= false
+  editModalVisibility: boolean = false;
   notes!: noteType[];
   noteId!: number;
   note!: noteType;
@@ -34,14 +34,14 @@ export class HomePageComponent implements OnInit {
   ) {}
 
   addNewNote() {
-    this.style = "visibility: visible";
+    this.newNoteModalVisibility = true
   }
   closeModal() {
-    this.style = "visibility: hidden";
+    this.newNoteModalVisibility =false
   }
 
   openEditNote(id: number) {
-    this.editModalStyle = "visibility: visible";
+    this.editModalVisibility = true
     this.noteId = id;
 
     const targetNote = this.notes.find((note: noteType) => note.id === id);
@@ -62,10 +62,12 @@ export class HomePageComponent implements OnInit {
   }
 
   closeEditModal() {
-    this.editModalStyle = "visibility: hidden";
+    this.editModalVisibility = false
   }
 
   ngOnInit(): void {
+    console.log(this.editModalVisibility);
+    
     if (this.userServices.isLoggedIn()) {
       this.NotesServices.getNotes().subscribe({
         next: (notes) => (this.notes = notes),

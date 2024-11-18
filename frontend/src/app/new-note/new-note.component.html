@@ -1,4 +1,4 @@
-<section [style]="style">
+<section [style.visibility]="style">
   <i class="fa fa-close" (click)="onClose()"></i>
   <form class="main" [formGroup]="newNoteForm" (ngSubmit)="handleSubmit()">
     <label for="title"> Write a title: </label>

@@ -1,7 +1,10 @@
 <main class="main">
-  <app-new-note [style]="style" (closeEvent)="closeModal()" />
+  <app-new-note
+    [style.visibility]="newNoteModalVisibility ? 'visible' : 'hidden'"
+    (closeEvent)="closeModal()"
+  />
   <app-edit-note
-    [style]="editModalStyle"
+    [style.visibility]="editModalVisibility ? 'visible' : 'hidden'"
     [noteId]="noteId"
     (closeEvent)="closeEditModal()"
     (editEvent)="editNote(noteId)"
