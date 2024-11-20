@@ -35,8 +35,6 @@ export class LoginComponent {
       password: this.loginForm.value.password,
     };
 
-
-    // ??? why have to use next and error ????
     this.userServices.loginUser(this.loginFormValue).subscribe({
       next: (res) => {
         alert(`welcome back ${res.user.name}!`);

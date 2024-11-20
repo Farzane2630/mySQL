@@ -22,7 +22,7 @@ import { UserServices } from "../services.user";
   styleUrl: "./home-page.component.scss",
 })
 export class HomePageComponent implements OnInit {
-  newNoteModalVisibility: boolean = false;
+  newNoteModalVisibility: boolean= false
   editModalVisibility: boolean = false;
   notes!: noteType[];
   noteId!: number;
@@ -33,17 +33,15 @@ export class HomePageComponent implements OnInit {
     private userServices: UserServices
   ) {}
 
-  // refactor using "viewContainerRef" -----> important*
   addNewNote() {
-    this.newNoteModalVisibility = true;
+    this.newNoteModalVisibility = true
   }
   closeModal() {
-    this.newNoteModalVisibility = false;
+    this.newNoteModalVisibility =false
   }
 
-  // refactor using "viewContainerRef" -----> important*
   openEditNote(id: number) {
-    this.editModalVisibility = true;
+    this.editModalVisibility = true
     this.noteId = id;
 
     const targetNote = this.notes.find((note: noteType) => note.id === id);
@@ -63,21 +61,21 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  // refactor using "viewContainerRef" -----> important*
   closeEditModal() {
-    this.editModalVisibility = false;
+    this.editModalVisibility = false
   }
 
   ngOnInit(): void {
     console.log(this.editModalVisibility);
-
+    
     if (this.userServices.isLoggedIn()) {
       this.NotesServices.getNotes().subscribe({
         next: (notes) => (this.notes = notes),
         error: (err) => console.error(err),
       });
-    } else {
+    }else{
       console.log("you should log in");
+      
     }
   }
 
