@@ -34,30 +34,21 @@ export async function getNote(id) {
   return note;
 }
 export async function deleteNote({ id, user_id }) {
-  const [result] = await pool.query(
+  const [note] = await pool.query(
     "DELETE FROM notes WHERE id = ? AND user_id =? ",
     [id,
     user_id]
   );
-  if (result.affectedRows > 0) {
-    return { success: true, message: "Note deleted successfully" };
-  } else {
-    return { success: false, message: "No matching note found" };
-  }
+  return note;
 }
 
 export async function updateNote({ user_id, id, title, content, category }) {
-  const [result] = await pool.query(
+  const [note] = await pool.query(
     "UPDATE notes SET title = ?, content = ?, category = ? WHERE user_id = ? AND id = ?",
     [title, content, category, user_id, id]
   );
-  if (result.affectedRows > 0) {
-    return { success: true, message: "Note updated successfully" };
-  } else {
-    return { success: false, message: "No matching note found" };
-  }
 
-  
+  return note;
 }
 
 // users table

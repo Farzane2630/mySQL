@@ -4,15 +4,11 @@ import jwt from "jsonwebtoken";
 
 const router = Router();
 
-router.post("/", async (req, res, next) => {
+router.post("/", async (req, res) => {
   const { name, email, password } = req.body;
 
-  if (!name || !email || !password) {
-    const error = new Error("invalid input");
-    error.status = 400;
-    return next(error);
-  }
   const createNewUser = await createUser({ name, email, password });
+
   res
     .status(201)
     .send({ message: "user is created successfully", user: createNewUser });
