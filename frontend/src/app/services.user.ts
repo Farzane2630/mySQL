@@ -7,13 +7,13 @@ import { Observable, tap } from "rxjs";
   providedIn: "root",
 })
 export class UserServices {
-  private ApiUrl = "http://127.0.0.1:8000";
+  private ApiUrl = "http://127.0.0.1:8000/api/users";
   private tokenKey = "authToken";
 
   constructor(private http: HttpClient) {}
 
   signupUser(userInfo: LoginFormType): Observable<any> {
-    return this.http.post(`${this.ApiUrl}/users`, userInfo);
+    return this.http.post(this.ApiUrl, userInfo);
   }
 
   loginUser(userInfo: LoginFormType): Observable<any> {

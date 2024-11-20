@@ -7,7 +7,7 @@ import { noteType } from "./types";
   providedIn: "root",
 })
 export class NotesServices {
-  private ApiUrl = "http://127.0.0.1:8000/notes";
+  private ApiUrl = "http://127.0.0.1:8000/api/notes";
   token = localStorage.getItem("token");
   constructor(private http: HttpClient) {}
 
