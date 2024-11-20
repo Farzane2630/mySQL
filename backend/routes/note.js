@@ -47,12 +47,13 @@ router.delete("/:id", authenticateToken, async (req, res, next) => {
   const user_id = req.user.user_id;
   const id = req.params.id;
   const note = await deleteNote({ id, user_id });
+
   if (!note.success) {
     const error = new Error(note.message);
     error.status = 404;
     return next(error);
   }
-  res.status(201).send(note.message);
+  res.status(201).json({ msg: note.message });
 });
 
 router.put("/:id", authenticateToken, async (req, res, next) => {
@@ -68,7 +69,7 @@ router.put("/:id", authenticateToken, async (req, res, next) => {
     error.status = 404;
     return next(error);
   }
-  res.status(201).send(result.message);
+  res.status(201).json({msg: result.message});
 });
 
 export default router;
