@@ -22,7 +22,7 @@ import { UserServices } from "../services.user";
   styleUrl: "./home-page.component.scss",
 })
 export class HomePageComponent implements OnInit {
-  newNoteModalVisibility: boolean= false
+  newNoteModalVisibility: boolean = false;
   editModalVisibility: boolean = false;
   notes!: noteType[];
   noteId!: number;
@@ -33,15 +33,33 @@ export class HomePageComponent implements OnInit {
     private userServices: UserServices
   ) {}
 
+  ngOnInit(): void {
+    if (this.userServices.isLoggedIn()) {
+      this.NotesServices.getNotes().subscribe({
+        next: (notes) => (this.notes = notes),
+        error: (err) => console.error(err),
+      });
+    } else {
+      console.log("you should log in");
+    }
+  }
+  refreshNotes() {
+    this.NotesServices.getNotes().subscribe({
+      next: (notes) => (this.notes = notes),
+      error: (err) => console.error(err),
+    });
+  }
+
   addNewNote() {
-    this.newNoteModalVisibility = true
+    this.newNoteModalVisibility = true;
   }
   closeModal() {
-    this.newNoteModalVisibility =false
+    this.newNoteModalVisibility = false;
+    this.refreshNotes();
   }
 
   openEditNote(id: number) {
-    this.editModalVisibility = true
+    this.editModalVisibility = true;
     this.noteId = id;
 
     const targetNote = this.notes.find((note: noteType) => note.id === id);
@@ -53,33 +71,25 @@ export class HomePageComponent implements OnInit {
     const targetNote = this.notes.find((note: noteType) => note.id === id);
 
     if (targetNote) {
-      this.NotesServices.updateNote(id, targetNote).subscribe((res) =>
-        alert(res.message)
-      );
-
-      this.closeEditModal();
+      this.NotesServices.updateNote(id, targetNote).subscribe({
+        next: (res) => {
+          alert(res.msg);
+          this.refreshNotes();
+          this.closeEditModal();
+        },
+      });
     }
   }
 
   closeEditModal() {
-    this.editModalVisibility = false
+    this.editModalVisibility = false;
   }
-
-  ngOnInit(): void {
-    console.log(this.editModalVisibility);
-    
-    if (this.userServices.isLoggedIn()) {
-      this.NotesServices.getNotes().subscribe({
-        next: (notes) => (this.notes = notes),
-        error: (err) => console.error(err),
-      });
-    }else{
-      console.log("you should log in");
-      
-    }
-  }
-
   deleteNote(noteID: number) {
-    this.NotesServices.deleteNote(noteID).subscribe();
+    this.NotesServices.deleteNote(noteID).subscribe({
+      next: () => {
+        this.refreshNotes()
+        // this.notes = this.notes.filter((note) => note.id !== noteID);
+      },
+    });
   }
 }

@@ -43,8 +43,7 @@ export class NewNoteComponent {
 
     this.noteServices
       .createNewNote(this.newNote)
-      .subscribe((res) => console.log(res));
+      .subscribe();
       this.onClose()
-    console.log(this.newNote);
   }
 }
