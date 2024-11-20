@@ -40,9 +40,11 @@ export class SignupComponent {
     this.newUser.email = this.signupForm.value.email;
     this.newUser.password = this.signupForm.value.password;
 
-    this.userServices.signupUser(this.newUser).subscribe();
+    this.userServices.signupUser(this.newUser).subscribe(res=> console.log(res));
 
-    alert(`Welcome ${this.newUser.name}!`);
-    this.router.navigate(['/home-page']);
+    alert(`Welcome ${this.newUser.name}! please login`);
+    this.router.navigate(['/']);
+
+    
   }
 }
