@@ -18,8 +18,11 @@ export const readNotes = async (req, res) => {
 // @desc    get a single note
 // route    GET - /api/notes/:id
 export const readNote = async (req, res, next) => {
+   const user_id = req.user.user_id;
   const id = req.params.id;
-  const note = await getNote(id);
+  const note = await getNote({id, user_id});
+  console.log(note);
+  
   if (note.length == 0) {
     const error = new Error(`note with id ${id} does not exist!`);
     error.status = 404;

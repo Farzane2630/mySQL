@@ -29,9 +29,9 @@ export async function getNotes(user_id) {
   ]);
   return notes;
 }
-export async function getNote(id) {
-  const [note] = await pool.query("SELECT * FROM notes WHERE id = ?", id);
-  return note;
+export async function getNote({id, user_id}) {
+  const [result] = await pool.query("SELECT * FROM notes WHERE id = ? AND user_id = ?", [id, user_id]);
+  return result;
 }
 export async function deleteNote({ id, user_id }) {
   const [result] = await pool.query(

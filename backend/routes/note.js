@@ -6,8 +6,7 @@ const router = Router();
 
 router.get("/", authenticateToken, readNotes)
 
-// !!! issue: unauth users access notes/:is  !!!
-router.get("/:id", readNote);
+router.get("/:id",authenticateToken, readNote);
 
 router.post("/", authenticateToken, createNewNote);
 
